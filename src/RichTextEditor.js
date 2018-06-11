@@ -62,8 +62,8 @@ export default class RichTextEditor extends Component {
     this._selectedTextChangeListeners = [];
   }
 
-  componentWillMount() {
-    if (PlatformIOS) {
+  componentDidMount() {
+    if(PlatformIOS) {
       this.keyboardEventListeners = [
         Keyboard.addListener("keyboardWillShow", this._onKeyboardWillShow),
         Keyboard.addListener("keyboardWillHide", this._onKeyboardWillHide)
@@ -77,9 +77,9 @@ export default class RichTextEditor extends Component {
   }
 
   componentWillUnmount() {
-    this.keyboardEventListeners.forEach(eventListener =>
-      eventListener.remove()
-    );
+    if (this.keyboardEventListeners) {
+      this.keyboardEventListeners.forEach((eventListener) => eventListener.remove());
+    }
   }
 
   _onKeyboardWillShow(event) {
