@@ -11,7 +11,9 @@ export const InjectedMessageHandler = `
           zss_editor.enableOnChange();
           break;
         case '${actions.setTitleHtml}':
-          zss_editor.setTitleHTML(action.data);
+          zss_editor.setTitleHTML(
+            action.data , 
+            action.optionalData);
           break;
         case '${actions.toggleTitle}':
           zss_editor.toggleTitle(action.data);

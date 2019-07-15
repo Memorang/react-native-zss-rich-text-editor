@@ -1362,13 +1362,28 @@
 				zss_editor.enabledEditingItems();
 			}
 
-			function setHTML(editorId, html) {
+			function setHTML(
+				editorId,
+				 html,
+				 style) {
 				var editor = $('#' + editorId);
 				editor.html(html);
+				if(style){
+				editor.css({
+					'font-size': `${style.fontSize}px`,
+					'line-height': `${style.lineHeight}px`,
+					'color' : `${style.fontColor}`
+				})
+			}
 			}
 
-			zss_editor.setTitleHTML = function(html) {
-				setHTML('zss_editor_title', html);
+			zss_editor.setTitleHTML = function(
+				html,
+				style) {
+				setHTML(
+			     'zss_editor_title',
+				 html,
+				 style);
 			}
 
 			zss_editor.toggleTitle = function() {
