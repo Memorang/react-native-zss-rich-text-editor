@@ -23,8 +23,10 @@ export default class RichTextEditor extends Component {
     customCSS: PropTypes.string,
     hiddenTitle: PropTypes.bool,
     enableOnChange: PropTypes.bool,
+    onTitleChange : PropTypes.func,
     footerHeight: PropTypes.number,
-    contentInset: PropTypes.object
+    contentInset: PropTypes.object,
+    maxCharLimit : PropTypes.number
   };
 
   static defaultProps = {
@@ -94,6 +96,13 @@ export default class RichTextEditor extends Component {
     this.setEditorHeight(editorAvailableHeight);
   }
 
+  setMaxCharLimit = (maxCharLimit) => {
+    this._sendAction(
+      actions.showCharLimit,
+      maxCharLimit
+    )
+  }
+
   onBridgeMessage(str){
     try {
       const message = JSON.parse(str);
@@ -144,18 +153,33 @@ export default class RichTextEditor extends Component {
           }
           break;
         case messages.ZSS_INITIALIZED:
-          if (this.props.customCSS) {
-            this.setCustomCSS(this.props.customCSS);
+          const {
+            hiddenTitle,
+            enableOnChange,
+            onTitleChange,
+            customCSS,
+            titlePlaceholder,
+            contentPlaceholder,
+            initialTitleHTML,
+            initialContentHTML,
+            editorInitializedCallback,
+            maxCharLimit
+          } = this.props
+          if (customCSS) {
+            this.setCustomCSS(customCSS);
           }
-          this.setTitlePlaceholder(this.props.titlePlaceholder);
-          this.setContentPlaceholder(this.props.contentPlaceholder);
-          this.setTitleHTML(this.props.initialTitleHTML);
-          this.setContentHTML(this.props.initialContentHTML);
+          if(maxCharLimit){
+            this.setMaxCharLimit(maxCharLimit)
+          }
+          this.setTitlePlaceholder(titlePlaceholder);
+          this.setContentPlaceholder(contentPlaceholder);
+          this.setTitleHTML(initialTitleHTML);
+          this.setContentHTML(initialContentHTML);
 
-          this.props.hiddenTitle && this.hideTitle();
-          this.props.enableOnChange && this.enableOnChange();
-
-          this.props.editorInitializedCallback && this.props.editorInitializedCallback();
+          hiddenTitle && this.hideTitle();
+          enableOnChange && this.enableOnChange();
+          onTitleChange && this.enableTitleChange();
+          editorInitializedCallback && editorInitializedCallback();
 
           break;
         case messages.LINK_TOUCHED:
@@ -185,6 +209,18 @@ export default class RichTextEditor extends Component {
         case messages.CONTENT_CHANGE: {
           const content = message.data.content;
           this.state.onChange.map((listener) => listener(content));
+          break;
+        }
+        case messages.TITLE_CHANGE: {
+          const {
+            content 
+          } = message.data 
+          const {
+            onTitleChange 
+          } = this.props 
+          if(onTitleChange){
+            onTitleChange(content)
+          }
           break;
         }
         case messages.SELECTED_TEXT_CHANGED: {
@@ -356,6 +392,10 @@ export default class RichTextEditor extends Component {
 
   enableOnChange() {
     this._sendAction(actions.enableOnChange);
+  }
+
+  enableTitleChange = () => {
+    this._sendAction(actions.enableTitleChange);
   }
 
   registerContentChangeListener(listener) {

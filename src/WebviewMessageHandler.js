@@ -5,8 +5,13 @@ export const InjectedMessageHandler = `
     WebViewBridge.onMessage = function (message) {
 
       const action = JSON.parse(message);
-
       switch(action.type) {
+        case '${actions.showCharLimit}':
+            zss_editor.setMaxCharLimit(action.data);
+            break;
+        case '${actions.enableTitleChange}':
+            zss_editor.enableTitleChange();
+            break;
         case '${actions.enableOnChange}':
           zss_editor.enableOnChange();
           break;
