@@ -942,7 +942,9 @@
 				whenPastingInsertAsPlainText('zss_editor_content');
 
 				zss_editor.focusTitle();
-
+				$('#charLimitContainer').hide();
+				$('#zss_editor_footer').hide();
+				$('#zss_editor_content').hide();
 				setTimeout(function() {
 					WebViewBridge.send(JSON.stringify({type: 'ZSS_INITIALIZED'}))
 				}, 20);
@@ -1417,6 +1419,33 @@
 				});
 			}
 
+			updateCharLimit = () => {
+				const limitViewText = $('#charLimitView').text();
+			    const maxCharLimit = limitViewText.split('/')[1];
+				const currentTextLength = $('#zss_editor_title').text().length;	
+				const isCharLimitExceed = currentTextLength > maxCharLimit;
+				if(isCharLimitExceed){
+					zss_editor.setBackgroundColor('red');
+					$('#charLimitView').css('color' , 'red');
+				} else{
+					zss_editor.setBackgroundColor('white');
+					$('#charLimitView').css('color' , 'black');
+				}
+				
+				$('#charLimitView').html(`${currentTextLength}/${maxCharLimit}`)
+			}
+
+			zss_editor.enableTitleChange = function() {
+				$('#zss_editor_title').on('input', function(){
+					updateCharLimit();
+				
+					WebViewBridge.send(JSON.stringify({
+						type: 'ENABLE_TITLE_CHANGE',
+						data: {content: $('#zss_editor_title').text()}
+					}))
+				});
+			}
+
 			zss_editor.hideTitle = function() {
 				$('#zss_editor_title').hide();
 				$('#separatorContainer').hide();
@@ -1611,6 +1640,11 @@
 				$('#zss_editor_title').focus();
 			}
 
+			zss_editor.setMaxCharLimit = function(maxCharLimit) {
+				$('#charLimitContainer').show();
+				$('#charLimitView').html(`0/${maxCharLimit}`)
+			}
+
 			zss_editor.focusEditor = function(editorId) {
 
 				// the following was taken from http://stackoverflow.com/questions/1125292/how-to-move-cursor-to-end-of-contenteditable-entity/3866442#3866442
@@ -1779,6 +1813,9 @@
 		<!-- ZSSRichTextEditor Editable Content -->
 		<div id="zss_editor_title" class="zss_editor_title" contenteditable="true" placeholder="" disableLineBreaks="true"></div>
 		<div id="separatorContainer"><hr></div>
+		<div id="charLimitContainer">
+			<p id="charLimitView" align="right"></p>
+		</div>
 		<div id="zss_editor_content" class="zss_editor_content" contenteditable="true" placeholder=""></div>
 		<div id="zss_editor_footer"></div>
 	</body>
