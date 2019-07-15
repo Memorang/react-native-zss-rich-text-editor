@@ -28,6 +28,7 @@ export default class RichTextEditor extends Component {
   static propTypes = {
     initialTitleHTML: PropTypes.string,
     initialContentHTML: PropTypes.string,
+    titleStyle : PropTypes.object,
     titlePlaceholder: PropTypes.string,
     contentPlaceholder: PropTypes.string,
     editorInitializedCallback: PropTypes.func,
@@ -398,8 +399,11 @@ export default class RichTextEditor extends Component {
       .replace(/[\t]/g, "\\t");
   };
 
-  _sendAction(action, data) {
-    let jsonString = JSON.stringify({ type: action, data });
+  _sendAction(
+    action,
+     data , 
+    optionalData) {
+    let jsonString = JSON.stringify({type: action, data ,optionalData });
     jsonString = this.escapeJSONString(jsonString);
     this.webviewBridge.sendToBridge(jsonString);
   }
@@ -448,7 +452,14 @@ export default class RichTextEditor extends Component {
   }
 
   setTitleHTML(html) {
-    this._sendAction(actions.setTitleHtml, html);
+    const {
+      titleStyle
+    } = this.props
+    this._sendAction(
+      actions.setTitleHtml,
+       html , 
+       titleStyle
+      );
   }
   hideTitle() {
     this._sendAction(actions.hideTitle);
