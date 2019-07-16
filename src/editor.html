@@ -1424,15 +1424,14 @@
 			    const maxCharLimit = limitViewText.split('/')[1];
 				const currentTextLength = $('#zss_editor_title').text().length;	
 				const isCharLimitExceed = currentTextLength > maxCharLimit;
+				const currentText = isCharLimitExceed ? maxCharLimit - currentTextLength
+				: currentTextLength;
 				if(isCharLimitExceed){
-					zss_editor.setBackgroundColor('red');
 					$('#charLimitView').css('color' , 'red');
 				} else{
-					zss_editor.setBackgroundColor('white');
 					$('#charLimitView').css('color' , 'black');
 				}
-				
-				$('#charLimitView').html(`${currentTextLength}/${maxCharLimit}`)
+				$('#charLimitView').html(`${currentText}/${maxCharLimit}`)
 			}
 
 			zss_editor.enableTitleChange = function() {
@@ -1440,7 +1439,7 @@
 					updateCharLimit();
 				
 					WebViewBridge.send(JSON.stringify({
-						type: 'ENABLE_TITLE_CHANGE',
+						type: 'TITLE_CHANGE',
 						data: {content: $('#zss_editor_title').text()}
 					}))
 				});
