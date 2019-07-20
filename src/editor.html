@@ -1443,9 +1443,7 @@
 				: currentTextLength;
 				if(isCharLimitExceed){
 					$('#charLimitView').css('color' , 'red');
-				} else{
-					$('#charLimitView').css('color' , 'black');
-				}
+				} 
 				$('#charLimitView').html(`${currentText}/${maxCharLimit}`)
 			}
 
@@ -1654,9 +1652,16 @@
 				$('#zss_editor_title').focus();
 			}
 
-			zss_editor.setMaxCharLimit = function(maxCharLimit) {
+			zss_editor.setMaxCharLimit = function(maxCharLimit , 
+			style) {
 				$('#charLimitContainer').show();
 				$('#charLimitView').html(`0/${maxCharLimit}`)
+				if(style){
+				$('#charLimitView').css({
+					'font-size' : `${style.fontSize}px`,
+					'color' : `${style.color}`
+				})
+				}
 			}
 
 			zss_editor.focusEditor = function(editorId) {
@@ -1782,6 +1787,10 @@
 				padding-right: 10px;
 			}
 
+			#charLimitContainer {
+				padding-right: 10px;	
+			}
+			
 			div.zss_editor_title {
 				font-family: 'Helvetica Neue Light', sans-serif;
 				font-size: 23px;

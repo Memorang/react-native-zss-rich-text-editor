@@ -30,6 +30,7 @@ export default class RichTextEditor extends Component {
     initialContentHTML: PropTypes.string,
     titleStyle : PropTypes.object,
     titlePlaceholder: PropTypes.string,
+    charProgressStyle : PropTypes.object,
     contentPlaceholder: PropTypes.string,
     editorInitializedCallback: PropTypes.func,
     customCSS: PropTypes.string,
@@ -112,9 +113,13 @@ export default class RichTextEditor extends Component {
   }
 
   setMaxCharLimit = (maxCharLimit) => {
+    const {
+      charProgressStyle
+    } = this.props 
     this._sendAction(
       actions.showCharLimit,
-      maxCharLimit
+      maxCharLimit,
+      charProgressStyle
     )
   }
 
