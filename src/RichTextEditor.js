@@ -18,6 +18,7 @@ export default class RichTextEditor extends Component {
     initialTitleHTML: PropTypes.string,
     initialContentHTML: PropTypes.string,
     titlePlaceholder: PropTypes.string,
+    charProgressStyle : PropTypes.object,
     contentPlaceholder: PropTypes.string,
     editorInitializedCallback: PropTypes.func,
     customCSS: PropTypes.string,
@@ -97,9 +98,13 @@ export default class RichTextEditor extends Component {
   }
 
   setMaxCharLimit = (maxCharLimit) => {
+    const {
+      charProgressStyle
+    } = this.props 
     this._sendAction(
       actions.showCharLimit,
-      maxCharLimit
+      maxCharLimit,
+      charProgressStyle
     )
   }
 
@@ -358,7 +363,8 @@ export default class RichTextEditor extends Component {
       .replace(/[\t]/g, '\\t');
   };
 
-  _sendAction(action, data) {
+  _sendAction(action, 
+    data) {
     let jsonString = JSON.stringify({type: action, data});
     jsonString = this.escapeJSONString(jsonString);
     this.webviewBridge.sendToBridge(jsonString);
