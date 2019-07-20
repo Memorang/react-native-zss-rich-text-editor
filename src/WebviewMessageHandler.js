@@ -7,7 +7,8 @@ export const InjectedMessageHandler = `
       const action = JSON.parse(message);
       switch(action.type) {
         case '${actions.showCharLimit}':
-            zss_editor.setMaxCharLimit(action.data);
+            zss_editor.setMaxCharLimit(action.data,  
+              action.optionalData);
             break;
         case '${actions.enableTitleChange}':
             zss_editor.enableTitleChange();
