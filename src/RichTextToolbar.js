@@ -107,7 +107,7 @@ export default class RichTextToolbar extends Component {
       <TouchableOpacity
           key={action}
           style={[
-            {height: 50, width: 50, justifyContent: 'center'},
+            {height: 50, width: 50, justifyContent: 'center' , alignItems : 'center'},
             selected ? this._getButtonSelectedStyle() : this._getButtonUnselectedStyle()
           ]}
           onPress={() => this._onPress(action)}
@@ -137,7 +137,9 @@ export default class RichTextToolbar extends Component {
           data={this.state.ds}
           renderItem={this._renderAction}
           keyExtractor={({ action }) => action}
-          contentContainerStyle={{ flexDirection: 'row' }}
+          contentContainerStyle={{ 
+            flexDirection: 'row' , 
+          justifyContent : 'space-around' }}
         />
       </View>
     );
