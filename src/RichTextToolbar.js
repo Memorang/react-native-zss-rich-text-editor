@@ -11,7 +11,7 @@ const defaultActions = [
   actions.setItalic,
   actions.insertBulletsList,
   actions.insertOrderedList,
-  actions.insertLink
+  actions.insertLink,
 ];
 
 function getDefaultIcon() {
@@ -34,6 +34,7 @@ export default class RichTextToolbar extends Component {
     onPressAddLink: PropTypes.func,
     onPressAddImage: PropTypes.func,
     onPressCustomCss : PropTypes.func,
+    onPressCustomCssTwo : PropTypes.func,
     selectedButtonStyle: PropTypes.object,
     iconTint: PropTypes.any,
     selectedIconTint: PropTypes.any,
@@ -194,6 +195,13 @@ export default class RichTextToolbar extends Component {
         if(onPressCustomCss){
           onPressCustomCss()
         }
+      case actions.setCustomCSSTwo : 
+        const {
+          onPressCustomCssTwo 
+          }= this.props 
+      if(onPressCustomCssTwo){
+        onPressCustomCssTwo()
+      }
         break;
     }
   }
