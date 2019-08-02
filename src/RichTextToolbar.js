@@ -197,6 +197,7 @@ export default class RichTextToolbar extends Component {
         if(onPressCustomCss){
           onPressCustomCss()
         }
+        break;
       case actions.setCustomCSSTwo : 
         const {
           onPressCustomCssTwo 
