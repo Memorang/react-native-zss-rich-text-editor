@@ -47,6 +47,7 @@ export const actions = {
   prepareInsert: 'PREPARE_INSERT',
   restoreSelection: 'RESTORE_SELECTION',
   setCustomCSS: 'SET_CUSTOM_CSS',
+  setCustomCSSTwo: 'SET_CUSTOM_CSS_TWO',
   setTextColor: 'SET_TEXT_COLOR',
   setBackgroundColor: 'SET_BACKGROUND_COLOR',
   init: 'ZSSS_INIT',
